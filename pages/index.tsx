@@ -2,6 +2,7 @@ import Head from 'next/head';
 import * as React from 'react';
 import styles from '../styles/Home.module.css';
 import { spawn, Worker, Transfer, Thread } from 'threads';
+import dynamic from 'next/dynamic';
 
 export default function Home() {
   const workerRef = React.useRef();
@@ -13,10 +14,9 @@ export default function Home() {
         new Worker(new URL('../worker/three', import.meta.url))
       );
     };
-    load().then(() => {
+    const render = () => {
       if (canvasRef.current && workerRef.current) {
         const canvas = canvasRef.current.transferControlToOffscreen();
-        console.log(canvas, canvasRef.current);
         workerRef.current.render(
           Transfer(
             {
@@ -27,11 +27,18 @@ export default function Home() {
           )
         );
       }
+    };
+    load().then(() => {
+      render();
     });
-    return () => workerRef.current && Thread.terminate(workerRef.current);
-  }, []);
-  React.useCallback(() => {
-    console.log(workerRef, canvasRef);
+    if (window) {
+      console.log('WINDWO');
+      window.addEventListener('resize', render);
+    }
+    return () => (
+      window.removeEventListener('resize', render),
+      workerRef.current && Thread.terminate(workerRef.current)
+    );
   }, []);
   React.useEffect(() => {
     canvasRef.current.width = window.innerWidth;
