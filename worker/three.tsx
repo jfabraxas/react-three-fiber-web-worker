@@ -7,10 +7,10 @@ import { Sphere } from '@react-three/drei';
 let offscreenCanvas
 
 const init = ({ canvas, size }) => {
+  console.log(canvas)
   offscreenCanvas = canvas
-  offscreenCanvas['style'] = { width: `${size?.width || 0}px`, height: `${size?.height || 0}px` }
- 
-  }
+  offscreenCanvas['style'] = { width: `${size?.width || 0}px`, height: `${size?.height || 0}px`}
+}
 
 const render = ({ size }) => {
   try {
@@ -29,4 +29,8 @@ const render = ({ size }) => {
   }
 };
 
-expose({ render, init });
+const handler = () => {
+  onClick:(event) => { console.log(event)}
+}
+
+expose({ render, init, handler });

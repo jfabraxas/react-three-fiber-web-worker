@@ -34,7 +34,6 @@ export default function Home() {
       );
     });
     if (window) {
-      console.log('WINDWO');
       window.addEventListener('resize', render);
     }
     return () => {
