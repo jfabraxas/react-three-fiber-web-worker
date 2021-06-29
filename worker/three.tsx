@@ -29,7 +29,7 @@ const render = ({ size }) => {
   }
 };
 
-const handler = () => {
+const handler =  {
   onClick:(event) => { console.log(event)}
 }
 
