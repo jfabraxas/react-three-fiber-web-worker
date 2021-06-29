@@ -32,6 +32,7 @@ export default function Home() {
           [canvas]
         )
       );
+      render();
     });
     if (window) {
       window.addEventListener('resize', render);
