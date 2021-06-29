@@ -16,30 +16,33 @@ export default function Home() {
     };
     const render = () => {
       if (canvasRef.current && workerRef.current) {
-        const canvas = canvasRef.current.transferControlToOffscreen();
-        workerRef.current.render(
-          Transfer(
-            {
-              canvas,
-              size: { width: window.innerWidth, height: window.innerHeight }
-            },
-            [canvas]
-          )
-        );
+        workerRef.current.render({
+          size: { width: window.innerWidth, height: window.innerHeight }
+        });
       }
     };
     load().then(() => {
-      render();
+      const canvas = canvasRef.current.transferControlToOffscreen();
+      workerRef.current.init(
+        Transfer(
+          {
+            canvas,
+            size: { width: window.innerWidth, height: window.innerHeight }
+          },
+          [canvas]
+        )
+      );
     });
     if (window) {
       console.log('WINDWO');
       window.addEventListener('resize', render);
     }
-    return () => (
-      window.removeEventListener('resize', render),
-      workerRef.current && Thread.terminate(workerRef.current)
-    );
+    return () => {
+      window.removeEventListener('resize', render);
+      workerRef.current && Thread.terminate(workerRef.current);
+    };
   }, []);
+
   React.useEffect(() => {
     canvasRef.current.width = window.innerWidth;
     canvasRef.current.height = window.innerHeight;

@@ -4,15 +4,22 @@ import * as THREE from 'three';
 import { render as renderer } from '@react-three/fiber';
 import { Sphere } from '@react-three/drei';
 
-const render = ({ canvas, size }) => {
+let offscreenCanvas
+
+const init = ({ canvas, size }) => {
+  offscreenCanvas = canvas
+  offscreenCanvas['style'] = { width: `${size?.width || 0}px`, height: `${size?.height || 0}px` }
+ 
+  }
+
+const render = ({ size }) => {
   try {
-    canvas['style'] = { width: `${size?.width || 0}px`, height: `${size?.height || 0}px` };
     renderer(
-      <mesh {...{ ref: console.log }}>
+      <mesh>
         <boxBufferGeometry />
         <meshNormalMaterial />
       </mesh>,
-      canvas,
+      offscreenCanvas,
       {
         size: { width: size.width || 900, height: size.height || 900 },
       }
@@ -22,4 +29,4 @@ const render = ({ canvas, size }) => {
   }
 };
 
-expose({ render });
+expose({ render, init });
