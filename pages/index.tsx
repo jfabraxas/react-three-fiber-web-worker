@@ -58,8 +58,7 @@ export default function Home() {
         </h1>
         <canvas
           {...{
-            onClick: event =>
-              workerRef.current.handler.then(({ onClick }) => onClick(event)),
+            onClick: event => console.log(workerRef.current.handler),
             style: {
               position: 'absolute',
               top: 0,
