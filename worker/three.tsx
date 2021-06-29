@@ -29,8 +29,6 @@ const render = ({ size }) => {
   }
 };
 
-const handler =  {
-  onClick:(event) => { console.log(event)}
-}
+const onClick = (event) => { console.log(event)}
 
-expose({ render, init, handler });
+expose({ render, init, onClick });
