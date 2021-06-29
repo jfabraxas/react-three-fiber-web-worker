@@ -6,7 +6,7 @@ import { Sphere } from '@react-three/drei';
 
 const render = ({ canvas, size }) => {
   try {
-    canvas['style'] = { width: '100px', height: '100px' };
+    canvas['style'] = { width: `${size?.width || 0}px`, height: `${size?.height || 0}px` };
     renderer(
       <mesh {...{ ref: console.log }}>
         <boxBufferGeometry />
@@ -15,9 +15,6 @@ const render = ({ canvas, size }) => {
       canvas,
       {
         size: { width: size.width || 900, height: size.height || 900 },
-        onCreated: state => {
-          console.log('CREATED');
-        }
       }
     );
   } catch (err) {
