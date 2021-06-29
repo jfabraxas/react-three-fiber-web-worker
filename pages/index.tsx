@@ -44,7 +44,7 @@ export default function Home() {
 
   React.useEffect(() => {
     canvasRef.current.width = window.innerWidth;
-    canvasRef.current.height = window.innerHeight;
+    canvasRef.current.height = window.innersHeight;
   }, []);
   return (
     <div className={styles.container}>
@@ -58,7 +58,7 @@ export default function Home() {
         </h1>
         <canvas
           {...{
-            onClick: (event) => workerRef.current?.handler?.onClick(event),
+            onClick: event => console.log(workerRef.current),
             style: {
               position: 'absolute',
               top: 0,
