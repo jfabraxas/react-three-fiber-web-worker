@@ -20,7 +20,7 @@ const eventHandlers = Object.entries(names).reduce((prev, [n1,[n2]]) => ({
     handlers[n1]?.(event)
   },
   [n2]:(event) => {
-    handlers[n2]?.(event)
+    handlers[n1]?.(event)
   },
 }),{})
 
@@ -40,7 +40,7 @@ const render = ({ size }) => {
           const es = events(store)
           Object.entries(events?.handlers ?? []).forEach(([name, event]) => {
             const [eventName, passive] = names[name as keyof typeof names]
-            handlers[eventName] = (event) => {
+            handlers[name] = (event) => {
               console.log(eventName, " in worker", event)
               es.handlers[name](event)
             }
