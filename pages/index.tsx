@@ -3,6 +3,7 @@ import * as React from 'react';
 import styles from '../styles/Home.module.css';
 import { spawn, Worker, Transfer, Thread } from 'threads';
 import dynamic from 'next/dynamic';
+import { names } from '../events';
 
 export default function Home() {
   const workerRef = React.useRef();
@@ -19,6 +20,9 @@ export default function Home() {
         workerRef.current.render({
           size: { width: window.innerWidth, height: window.innerHeight }
         });
+        Object.entries(names).forEach(([name,[eventName,passive]]) => {
+          canvas.current.addEventListener(eventName, workerRef.current.handlers?.[name],passive)
+        })
       }
     };
     load().then(() => {
@@ -33,6 +37,7 @@ export default function Home() {
         )
       );
       render();
+
     });
     if (window) {
       window.addEventListener('resize', render);
