@@ -8,7 +8,6 @@ import { names } from '../events'
 let offscreenCanvas
 
 const init = ({ canvas, size }) => {
-  console.log(canvas)
   offscreenCanvas = canvas
   offscreenCanvas['style'] = { width: `${size?.width || 0}px`, height: `${size?.height || 0}px`}
 }
@@ -20,6 +19,8 @@ const eventHandlers = Object.entries(names).reduce((prev, [n1,[n2]]) => ({
   [n1]:(event) => handlers[n1]?.(event),
   [n2]:(event) => handlers[n1]?.(event),
 }),{})
+
+console.log(eventHandlers, names)
 
 let connected =false
 
