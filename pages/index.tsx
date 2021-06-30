@@ -59,8 +59,7 @@ export default function Home() {
         </h1>
         <canvas
           {...{
-            onClick: event =>
-              workerRef.current.onClick({ clientX: event.clientX }),
+            onClick: event => console.log(workerRef.current),
             style: {
               position: 'absolute',
               top: 0,

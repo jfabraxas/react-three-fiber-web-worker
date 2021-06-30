@@ -12,13 +12,25 @@ const init = ({ canvas, size }) => {
   offscreenCanvas['style'] = { width: `${size?.width || 0}px`, height: `${size?.height || 0}px`}
 }
 
+const handlers = {}
+let connected =false
+
 const render = ({ size }) => {
+  
   try {
     renderer(
-      <mesh {...{ onClick: () => { console.log("CLICKER WORKS")}}}>
+      <mesh {...{ onClick: () => { console.log("CLICKER WORKS" )}}}>
         <boxBufferGeometry />
         <meshNormalMaterial />
       </mesh>,
+      events: (store) => {
+        const es = events(store)
+        Object.entries(events?.handlers ?? []).forEach(([name, event]) => {
+          const [eventName, passive] = names[name as keyof typeof names]
+          handlers[eventName] = (event) => es.handlers[name](event)
+        })
+        return {...es, connected}
+      },
       offscreenCanvas,
       {
         size: { width: size.width || 900, height: size.height || 900 },
@@ -31,4 +43,4 @@ const render = ({ size }) => {
 
 const onClick = (event) => { console.log(event)}
 
-expose({ render, init, onClick });
+expose({ render, init, onClick, handlers });
