@@ -16,8 +16,14 @@ const handlers = {}
 
 const eventHandlers = Object.entries(names).reduce((prev, [n1,[n2]]) => ({
   ...prev,
-  [n1]:(event) => handlers[n1]?.(event),
-  [n2]:(event) => handlers[n1]?.(event),
+  [n1]:(event) => {
+    console.log("worker",n1,n2,eveng)
+    handlers[n1]?.(event)
+  },
+  [n2]:(event) => {
+    console.log("worker",n1,n2,eveng)
+    handlers[n1]?.(event)
+  },
 }),{})
 
 let connected =false
