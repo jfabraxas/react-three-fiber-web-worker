@@ -25,8 +25,6 @@ export default function Home() {
             eventName,
             ({ ...event }) => {
               if (workerRef.current[name]) {
-                if (eventName === 'click')
-                  console.log(eventName, workerRef.current[name]);
                 workerRef.current[name]({ clientX: event.clientX });
               }
             },
