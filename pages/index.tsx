@@ -20,14 +20,18 @@ export default function Home() {
         workerRef.current.render({
           size: { width: window.innerWidth, height: window.innerHeight }
         });
-        Object.entries(names).forEach(([name,[eventName,passive]]) => {
-          canvasRef.current.addEventListener(eventName, ({...event}) => {
-            if(workerRef.current[name]){
-              console.log(eventName)
-              workerRef.current?.[name]({ clientX: event.clientX })
-            }
-          },passive)
-        })
+        Object.entries(names).forEach(([name, [eventName, passive]]) => {
+          canvasRef.current.addEventListener(
+            eventName,
+            ({ ...event }) => {
+              if (workerRef.current[name]) {
+                console.log(eventName);
+                workerRef.current[name]({ clientX: event.clientX });
+              }
+            },
+            passive
+          );
+        });
       }
     };
     load().then(() => {
@@ -42,7 +46,6 @@ export default function Home() {
         )
       );
       render();
-
     });
     if (window) {
       window.addEventListener('resize', render);
@@ -69,7 +72,6 @@ export default function Home() {
         </h1>
         <canvas
           {...{
-            onClick: event => console.log(workerRef.current),
             style: {
               position: 'absolute',
               top: 0,
