@@ -22,11 +22,9 @@ export default function Home() {
         });
         Object.entries(names).forEach(([name,[eventName,passive]]) => {
           canvasRef.current.addEventListener(eventName, (event) => {
-            console.log(eventName)
-            workerRef.current?.[name]
+            workerRef.current?.[name](event)
           },passive)
         })
-        console.log("ADDED EVENTLISTENERS", canvasRef.current)
       }
     };
     load().then(() => {
