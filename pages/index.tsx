@@ -21,7 +21,7 @@ export default function Home() {
           size: { width: window.innerWidth, height: window.innerHeight }
         });
         Object.entries(names).forEach(([name,[eventName,passive]]) => {
-          canvas.current.addEventListener(eventName, workerRef.current.handlers?.[name],passive)
+          canvasRef.current.addEventListener(eventName, workerRef.current.handlers?.[name],passive)
         })
       }
     };
