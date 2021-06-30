@@ -22,7 +22,10 @@ export default function Home() {
         });
         Object.entries(names).forEach(([name,[eventName,passive]]) => {
           canvasRef.current.addEventListener(eventName, ({...event}) => {
-            workerRef.current?.[name]({ clientX: event.clientX })
+            if(workerRef.current[name]){
+              console.log(eventName)
+              workerRef.current?.[name]({ clientX: event.clientX })
+            }
           },passive)
         })
       }
