@@ -50,4 +50,4 @@ const render = ({ size }) => {
 };
 
 
-expose({ render, init, handlers:eventHandlers });
+expose({ render, init, ...eventHandlers });
