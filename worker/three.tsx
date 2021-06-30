@@ -15,7 +15,7 @@ const init = ({ canvas, size }) => {
 const render = ({ size }) => {
   try {
     renderer(
-      <mesh>
+      <mesh {...{ onClick: () => { console.log("CLICKER WORKS")}}}>
         <boxBufferGeometry />
         <meshNormalMaterial />
       </mesh>,
