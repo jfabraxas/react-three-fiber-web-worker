@@ -23,14 +23,6 @@ const render = ({ size }) => {
         <boxBufferGeometry />
         <meshNormalMaterial />
       </mesh>,
-      events: (store) => {
-        const es = events(store)
-        Object.entries(events?.handlers ?? []).forEach(([name, event]) => {
-          const [eventName, passive] = names[name as keyof typeof names]
-          handlers[eventName] = (event) => es.handlers[name](event)
-        })
-        return {...es, connected}
-      },
       offscreenCanvas,
       {
         size: { width: size.width || 900, height: size.height || 900 },
