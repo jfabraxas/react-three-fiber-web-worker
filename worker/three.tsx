@@ -36,7 +36,10 @@ const render = ({ size }) => {
           const es = events(store)
           Object.entries(events?.handlers ?? []).forEach(([name, event]) => {
             const [eventName, passive] = names[name as keyof typeof names]
-            handlers[eventName] = (event) => es.handlers[name](event)
+            handlers[eventName] = (event) => {
+              console.log(eventName, " in worker", event)
+              es.handlers[name](event)
+            }
           })
           return {...es, handlers, connected: true}
         },
