@@ -20,6 +20,7 @@ const eventHandlers = Object.entries(names).reduce((prev, [n1,[n2]]) => ({
     handlers[n1]?.(event)
   },
   [n2]:(event) => {
+    console.log(handlers)
     handlers[n1]?.(event)
   },
 }),{})
