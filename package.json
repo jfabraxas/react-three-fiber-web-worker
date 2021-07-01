@@ -8,7 +8,6 @@
     "start": "next start"
   },
   "dependencies": {
-    "@ampproject/worker-dom": "^0.29.3",
     "@react-three/drei": "^7.0.2",
     "@react-three/fiber": "^7.0.1",
     "next": "^11.0.1",
