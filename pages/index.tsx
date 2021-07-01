@@ -1,64 +1,75 @@
-import Head from 'next/head';
-import * as React from 'react';
-import styles from '../styles/Home.module.css';
-import { spawn, Worker, Transfer, Thread } from 'threads';
-import dynamic from 'next/dynamic';
-import { names } from '../events';
+import Head from 'next/head'
+import * as React from 'react'
+import styles from '../styles/Home.module.css'
+import { spawn, Worker, Transfer, Thread } from 'threads'
+import dynamic from 'next/dynamic'
+import { names } from '../events'
 
 export default function Home() {
-  const workerRef = React.useRef();
-  const canvasRef = React.useRef(null);
+  const workerRef = React.useRef(null)
+  const canvasRef = React.useRef(null)
   React.useEffect(() => {
     const load = async () => {
-      if (workerRef.current) return;
-      workerRef.current = await spawn(
-        new Worker(new URL('../worker/three', import.meta.url))
-      );
-    };
+      if (workerRef.current) return
+      workerRef.current = await spawn(new Worker(new URL('../worker/three', import.meta.url)))
+    }
     const render = () => {
       if (canvasRef.current && workerRef.current) {
         workerRef.current.render({
-          size: { width: window.innerWidth, height: window.innerHeight }
-        });
+          size: { width: window.innerWidth, height: window.innerHeight },
+        })
         Object.entries(names).forEach(([name, [eventName, passive]]) => {
           canvasRef.current.addEventListener(
             eventName,
-            ({ ...event }) => {
-              if (workerRef.current[name]) {
-                workerRef.current[name]({ clientX: event.clientX });
+            (event) => {
+              if (workerRef.current?.[name]) {
+                eventName === 'click' && console.log(event)
+                workerRef.current[name]({
+                  clientX: event.clientX,
+                  clientY: event.clientY,
+                  offsetX: event.offsetX,
+                  offsetY: event.offsetY,
+                  type: event.type,
+                  pointerId: event.pointerId,
+                  pointerType: event.pointerType,
+                  x: event.x,
+                  y: event.y,
+                  screenX: event.screenX,
+                  screenY: event.screenY,
+                })
               }
             },
             passive
-          );
-        });
+          )
+        })
       }
-    };
+    }
     load().then(() => {
-      const canvas = canvasRef.current.transferControlToOffscreen();
+      const canvas = canvasRef.current.transferControlToOffscreen()
       workerRef.current.init(
         Transfer(
           {
             canvas,
-            size: { width: window.innerWidth, height: window.innerHeight }
+            size: { width: window.innerWidth, height: window.innerHeight },
           },
           [canvas]
         )
-      );
-      render();
-    });
+      )
+      render()
+    })
     if (window) {
-      window.addEventListener('resize', render);
+      window.addEventListener('resize', render)
     }
     return () => {
-      window.removeEventListener('resize', render);
-      workerRef.current && Thread.terminate(workerRef.current);
-    };
-  }, []);
+      window.removeEventListener('resize', render)
+      workerRef.current && Thread.terminate(workerRef.current)
+    }
+  }, [])
 
   React.useEffect(() => {
-    canvasRef.current.width = window.innerWidth;
-    canvasRef.current.height = window.innersHeight;
-  }, []);
+    canvasRef.current.width = window.innerWidth
+    canvasRef.current.height = window.innerHeight
+  }, [])
   return (
     <div className={styles.container}>
       <Head>
@@ -67,7 +78,7 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          Welcome to <a href='https://nextjs.org'>Next.js!</a>
         </h1>
         <canvas
           {...{
@@ -78,13 +89,13 @@ export default function Home() {
               width: '100%',
               height: '100%',
               border: '1px solid red',
-              boxSizing: 'border-box'
+              boxSizing: 'border-box',
             },
-            ref: canvasRef
+            ref: canvasRef,
           }}
         />
       </main>
       <footer className={styles.footer} />
     </div>
-  );
+  )
 }
