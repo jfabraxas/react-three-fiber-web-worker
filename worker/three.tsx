@@ -5,6 +5,7 @@ import { render as renderer, events } from '@react-three/fiber'
 import { Sphere, OrbitControls } from '@react-three/drei'
 import { names } from '../events'
 import { Scene } from '../components/Scene'
+// import {  } from '@ampproject/worker-dom/dist/worker/worker'
 
 let offscreenCanvas
 const handlers = {}
@@ -27,11 +28,13 @@ const eventHandlers = Object.entries(names).reduce(
   {}
 )
 
-const render = ({ size }) => {
+let SIZE = { width: 100, height: 100 }
+
+const render = ({ size } = { size: SIZE }) => {
+  SIZE = size
   try {
     renderer(<Scene />, offscreenCanvas, {
-      // events,
-      size: { width: size.width || 900, height: size.height || 900 },
+      size,
       onCreated: (state) => {
         const store = {
           getState() {
@@ -39,7 +42,12 @@ const render = ({ size }) => {
           },
         }
         const target = {
-          addEventListener(eventName, event, { passive }) {
+          style: { touchAction: true },
+          ownerDocument: { removeEventListener() {} },
+          removeEventListener(eventName, eventHandler) {
+            console.log('REMOVE', eventName)
+          },
+          addEventListener(eventName, event) {
             handlers[eventName] = (e) => {
               event(e)
             }

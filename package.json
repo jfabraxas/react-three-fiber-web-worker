@@ -8,19 +8,22 @@
     "start": "next start"
   },
   "dependencies": {
-    "@ampproject/worker-dom": "^0.30.0",
-    "@react-three/drei": "^7.0.2",
-    "@react-three/fiber": "^7.0.1",
+    "@ampproject/worker-dom": "git+https://github.com/ampproject/worker-dom.git",
+    "@mizchi/worker-dom": "^0.25.1",
+    "@react-three/drei": "^7.0.6",
+    "@react-three/fiber": "^7.0.2",
     "next": "^11.0.1",
+    "raf": "^3.4.1",
     "react": "^18.0.0-alpha-73ffce1b6-20210624",
     "react-dom": "^18.0.0-alpha-73ffce1b6-20210624",
     "threads": "^1.6.5",
     "three": "^0.129.0"
   },
   "devDependencies": {
-    "@types/node": "^15.12.5",
-    "@types/react": "^17.0.11",
+    "@types/node": "^14.0.0",
+    "@types/react": "^17.0.13",
     "@types/react-dom": "^17.0.8",
-    "typescript": "^4.3.4"
+    "ts-loader": "^9.2.3",
+    "typescript": "^4.3.5"
   }
 }

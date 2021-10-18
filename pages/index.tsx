@@ -7,10 +7,11 @@ import { names } from '../events'
 
 export default function Home() {
   const workerRef = React.useRef(null)
-  const canvasRef = React.useRef(null)
+  const canvasRef = React.useRef<HTMLCanvasElement>(null)
   React.useEffect(() => {
     const load = async () => {
       if (workerRef.current) return
+      // @ts-ignore
       workerRef.current = await spawn(new Worker(new URL('../worker/three', import.meta.url)))
     }
     const render = () => {
@@ -21,10 +22,12 @@ export default function Home() {
         Object.entries(names).forEach(([name, [eventName, passive]]) => {
           canvasRef.current.addEventListener(
             eventName,
-            (event) => {
+            (event: PointerEvent) => {
               if (workerRef.current?.[name]) {
                 eventName === 'click' && console.log(event)
                 workerRef.current[name]({
+                  width: event.width,
+                  height: event.height,
                   clientX: event.clientX,
                   clientY: event.clientY,
                   offsetX: event.offsetX,
@@ -36,7 +39,20 @@ export default function Home() {
                   y: event.y,
                   screenX: event.screenX,
                   screenY: event.screenY,
-                })
+                  pageX: event.pageX,
+                  pageY: event.pageY,
+                  movementX: event.movementX,
+                  movementY: event.movementY,
+                  tiltX: event.tiltX,
+                  ctrlKey: event.ctrlKey,
+                  altKey: event.altKey,
+                  metaKey: event.metaKey,
+                  shiftKey: event.shiftKey,
+                  detail: event.detail,
+                  // view: event.view,
+                  tangentialPressure: event.tangentialPressure,
+                  timeStamp: event.timeStamp,
+                } as Partial<PointerEvent>)
               }
             },
             passive
@@ -45,7 +61,9 @@ export default function Home() {
       }
     }
     load().then(() => {
-      const canvas = canvasRef.current.transferControlToOffscreen()
+      canvasRef.current.width = window.innerWidth
+      canvasRef.current.height = window.innerHeight
+      const canvas = (canvasRef.current as any).transferControlToOffscreen()
       workerRef.current.init(
         Transfer(
           {
@@ -55,6 +73,7 @@ export default function Home() {
           [canvas]
         )
       )
+
       render()
     })
     if (window) {
@@ -66,10 +85,6 @@ export default function Home() {
     }
   }, [])
 
-  React.useEffect(() => {
-    canvasRef.current.width = window.innerWidth
-    canvasRef.current.height = window.innerHeight
-  }, [])
   return (
     <div className={styles.container}>
       <Head>
